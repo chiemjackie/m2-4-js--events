@@ -34,6 +34,8 @@ Open the door, when someone is there.
 
 Focus and blur events fire when the HTML elements **you can interact with** gain/lose focus.
 
+
+
 ---
 
 ### Events and DOM Nodes
@@ -43,11 +45,31 @@ All DOM nodes have methods we can use to _notify_ us of an event.
 - [`addEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener), [`removeEventListener()`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
 
 ```html
-<div id="secret-door">🚪</div>
+<div id="door">🚪</div>
 ```
 
 ```js
-// Example
+// Example - install doorbell
+
+// Target element - create door
+const door = document.querySelector('#door');
+
+// On click, ding dong will be logged
+door.addEventListener('click',function() {
+  console.log('ding dong');
+});
+
+// For Bob specifically
+const doorbell = function() {
+  // who's there?
+  console.log('Is it Bob?');
+  // If yes, then disable doorbell
+  door.removeEventListener('click', doorbell);
+}); 
+door.addEventListener('click', doorbell);
+
+// 'click' can be anything, like mouseover
+
 ```
 
 ---
@@ -62,6 +84,8 @@ This object includes lots of stuff.
 - `target`
 - `stopPropagation()`
 
+
+
 ---
 
 ### Default Actions
@@ -75,6 +99,8 @@ Some events have _default_ actions associated to them.
 In most cases handlers are called _before_ the default action takes place.
 
 You can prevent the _default_ action from happening by calling `event.preventDefault();` in the eventListener function.
+
+<!-- Mostly in the case of forms, because there's a lot of default options, especially with "Submit". Sometimes we don't want these to happen/do something else. E.g. validate each input, then submit manually, highlight errors, etc. -->
 
 ---
 
@@ -130,10 +156,12 @@ para.addEventListener('mousedown', () => {
 
 button.addEventListener('mousedown', (event) => {
   console.log('Handler for button.');
-  if (event.button == 2) event.stopPropagation();
+  if (event.button === 2) {
+    event.stopPropagation();
+  }
 });
 ```
-
+<!--  -->
 ---
 
 ## Events and the Event Loop
@@ -152,4 +180,59 @@ This can occur if you have long-running event handlers, or _lots_ of short-runni
 
 _source [Eloquent JavaScript](https://eloquentjavascript.net/15_event.html)_
 
+<!--  -->
+```js
+const balloon = document.querySelector('#balloon');
+let balloonSize = 12
+balloon.style.fontSize = `${balloonSize}px`;
+const RATE = 5;
+const LIMIT = 75;
+
+// listen on the up and down arrows
+// if up, inflate balloon
+// if down, deflate balloon
+
+// if balloon is bigger than x, BOOM
+
+const resize = function() {
+  const keyPress = event.key;
+  if (keyPress === 'ArrowUp') {
+    balloonSize += 10;
+    balloon.style.fontSize = `${balloonSize}px`;
+  } 
+  if (keyPress === 'ArrowDown') {
+    balloonSize -= 10;
+    balloon.style.fontSize = `${balloonSize}px`;
+  }
+  if (balloonSize > LIMIT) {
+    balloon.innerText = 'BLOWN UP EMOJI';
+    const explosion = setInterval(function() {
+      balloonSize += 50;
+      baloon.style.fontSize = `${balloonSize}px`;
+
+      if (balloonSize > 1000) {
+        balloon.style.opacity = 0;
+        clearInterval(explosion);
+      }
+    }, 20);
+    document.removeEventListener('keydown', resize);
+  }
+}
+// SHORTER VERSION 
+
+function modifyBalloonSize();
+.....
+
+function resize(event) {
+  const keyPress = event.key;
+
+  if (keyPress === 'ArrowUp') {
+    modifyBalloonSize('more')
+  } else if (keyPress === 'ArrowDown') {
+    modifyBalloonSize('less')
+  }
+}
+
+
+document.addEventListener('keydown', resize);
 ---
