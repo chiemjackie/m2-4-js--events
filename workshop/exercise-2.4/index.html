@@ -2,10 +2,104 @@
 <html>
   <head>
     <title>Exercise 2.4</title>
-    <style></style>
+    <style>
+      * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+      }
+      body {
+          font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+      }
+      header {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100px;
+          width: 100%;
+          background: #707070;
+          color: #fff;
+          font-size: 48px;
+      }
+      .main {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+      }
+      .game-board {
+          background: #eaeaea;
+          width: 800px;
+          height: 600px;
+          margin-top: 150px;
+          position: relative;
+      }
+      button {
+          height: 50px;
+          width: 50px;
+          background: #990000;
+          border-radius: 50%;
+          position: absolute;
+          color: white;
+          cursor: pointer;
+          font-size: 32px;
+          border: none;
+          box-shadow: none;
+          margin: 1px;
+      }
+      button.start {
+          width: 160px;
+          height: 60px;
+          background: gold;
+          border: 2px solid #808080;
+          border-radius: 3px;
+          color: #808080;
+          transition: all ease 500ms;
+      }
+      button.start:hover {
+          width: 200px;
+          height: 80px;
+          background: #808080;
+          border: 2px solid gold;
+          border-radius: 3px;
+          color: gold;
+      }
+      .green {
+          background: #005900;
+      }
+      .notification {
+          display: block;
+          background: green;
+          border-radius: 10px;
+          box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.2);
+          width: 300px;
+          height: 0;
+          position: absolute;
+          top: calc(50% - 100px);
+          left: calc(50% - 150px);
+          z-index: 1;
+          color: #fff;
+          font-size: 48px;
+          transition: all ease 500ms;
+          text-align: center;
+          line-height: 48px;
+      }
+    </style>
   </head>
   <body>
-    <div class="main" id="main"></div>
+    <header>
+      <button class="start" id="start-button" onclick="startGame()">
+        Start
+      </button>
+      <div id="timer" class="timer"></div>
+    </header>
+    <div id="game-board" class="game-board">
+      <p id="notification" class="notification"></p>
+    </div>
+
     <script src="app.js"></script>
   </body>
 </html>
